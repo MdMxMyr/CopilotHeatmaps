@@ -9,8 +9,6 @@ export default function Home() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
-  
-
   const { getArtboardName, artboardName, handleNodeChange } = useNodeToArtboardMapping();
   
   // Constants
