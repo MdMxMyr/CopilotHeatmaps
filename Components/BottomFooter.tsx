@@ -43,8 +43,7 @@ const BottomFooter: React.FC = () => {
     return useMemo(() => {
         return (
             <footer
-                style={{ height: '60px', zIndex: 1000000 }} // Adjust the height as needed
-                className="fixed bottom-0 left-0 w-full bg-gray-800 text-white flex items-center justify-center px-4"
+                className="fixed bottom-0 left-0 w-full h-65 z-50 bg-gray-800 text-white flex items-center justify-center px-4"
             >
                 {!clickLocation ? (
                     <div className="flex items-center justify-center w-full">

@@ -67,7 +67,7 @@ const CursorTrackingOverlay: React.FC<CursorTrackingOverlayProps> = ({ isActive 
   // Transparent overlay to ensure we "see" the mouse on the page
   return (
     <>
-        <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-[9998]">
+        <div className="absolute top-0 left-0 w-full h-full pointer-events-none z-[40]">
             <ClickMarker />
         </div>
     </>

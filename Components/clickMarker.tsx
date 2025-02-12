@@ -29,7 +29,7 @@ const ClickMarker: React.FC = () => {
                     borderRadius: '50%',
                     backgroundColor: 'rgb(59, 130, 246)', // blue-500 color
                     pointerEvents: 'none',
-                    zIndex: 99999,
+                    zIndex: 45,
                     transform: 'translate(-50%, -50%)',
                     opacity: 1,
                     left: `${clickLocation.x}px`,
