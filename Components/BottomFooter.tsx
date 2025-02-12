@@ -3,6 +3,10 @@
 import React, { useMemo } from "react";
 import { useCursorTracking } from "@/contexts/CursorTrackingContext";
 import { useFigmaEmbed } from "@/contexts/FigmaEmbedContext";
+
+// This component is the bottom footer of the page
+// It displays a message and a button to proceed to the next step
+// It also handles the calibration of the CursorTrackingOverlay
 const BottomFooter: React.FC = () => {
 
     // Grab the current artboard task config and the navigation methods

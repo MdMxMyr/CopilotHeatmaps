@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from 'react';
+import { Suspense, useEffect, useRef } from 'react';
 
 import CursorTrackingOverlay from '@/Components/CursorTrackingOverlay';
 import BottomFooter from '@/Components/BottomFooter';
@@ -8,7 +8,8 @@ import FigmaEmbed from '@/Components/FigmaEmbed';
 import { useFigmaEmbed } from '@/contexts/FigmaEmbedContext';
 import { useSearchParams } from 'next/navigation';
 
-export default function Home() {
+// The component that displays the study
+function StudyComponent() {
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const mainRef = useRef<HTMLDivElement>(null);
 
@@ -66,5 +67,14 @@ export default function Home() {
       </div>
       <BottomFooter />
     </>
+  );
+}
+
+// The component wrapped in a suspense boundary
+export default function StudyComponentWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <StudyComponent />
+    </Suspense>
   );
 }
