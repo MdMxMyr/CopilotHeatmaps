@@ -37,13 +37,13 @@ function StudyComponent() {
   if (!studySetup) {
     return (
       <div className="flex flex-col h-screen w-screen">
-        <div className="text-center text-2xl">Loading...</div>
+        <div className="text-center text-2xl">You need to select a study first!</div>
       </div>
     );
   }
 
   return (
-    <>
+    <div>
       <div className="flex flex-col h-screen w-screen">
         {/* <iframe 
           ref={iframeRef}
@@ -66,7 +66,7 @@ function StudyComponent() {
         <CursorTrackingOverlay isActive={true} />
       </div>
       <BottomFooter />
-    </>
+    </div>
   );
 }
 
