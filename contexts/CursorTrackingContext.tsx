@@ -1,5 +1,7 @@
 "use client";
 
+import { ArtboardDimensions } from "@/config/ArtboardConfig";
+import { studyArtboardDimensions } from "@/studies/BInFvH6XwnbgTYPsnuDvpt";
 import React, { createContext, useState, useContext, FC } from "react";
 
 // Defines the structure for cursor position data, including timestamp
@@ -13,6 +15,7 @@ interface CursorPosition {
 interface ClickLocation {
     x: number;                  // X coordinate of first click
     y: number;                  // Y coordinate of first click
+    time: number;               // Timestamp of when click was recorded
 }
 
 // Defines the structure for calibration points
@@ -40,7 +43,10 @@ export const CursorTrackingProvider: FC<{ children: React.ReactNode }> = ({ chil
     
     // State for storing cursor movement history
     const [cursorData, setCursorData] = useState<CursorPosition[]>([]);
-    // State for storing click location
+    // State for storing the click locations
+    const [clickData, setClickData] = useState<ClickLocation[]>([]);
+
+    // State for storing click location for the marker
     const [clickLocation, setClickLocationState] = useState<ClickLocation | null>(null);
     // State for storing calibration points
     const [calibrationPoints, setCalibrationPoints] = useState<CalibrationPoint | null>({
@@ -65,8 +71,16 @@ export const CursorTrackingProvider: FC<{ children: React.ReactNode }> = ({ chil
         // Check if the cursor position is within the calibration points
         if (topLeft && bottomRight) {
             if (x >= topLeft.x && x <= bottomRight.x && y >= topLeft.y && y <= bottomRight.y) {
+                // Map the cursor position to the artboard dimensions
+                const mappedCursorPosition = mapCursorPositionToArtboard(pos, studyArtboardDimensions);
+
                 // Add the cursor position to the history if it is within the calibration points
-                setCursorData((prev) => [...prev, pos]);
+                setCursorData((prev) => [...prev, mappedCursorPosition]);
+
+                // If we're in the dev environment, log the cursor position
+                if (process.env.NODE_ENV === "development") {
+                    console.log("[CursorTrackingContext] Added cursor position:", mappedCursorPosition);
+                }
             }
         }
     };
@@ -85,8 +99,20 @@ export const CursorTrackingProvider: FC<{ children: React.ReactNode }> = ({ chil
 
             // Check if the click location is within the calibration points
             if (x >= topLeft!.x && x <= bottomRight!.x && y >= topLeft!.y && y <= bottomRight!.y) {
-                // Set the click location if it is within the calibration points
+
+                // Add the click location to the history
                 setClickLocationState(click);
+
+                // Map the click location to the artboard dimensions
+                const mappedClickLocation = mapCursorPositionToArtboard(click, studyArtboardDimensions);
+
+                // Add the click location to the history
+                setClickData((prev) => [...prev, mappedClickLocation]);
+
+                // If we're in the dev environment, log the click location
+                if (process.env.NODE_ENV === "development") {
+                    console.log("[CursorTrackingContext] Set click location:", mappedClickLocation);
+                }
             }
         }
     };
@@ -103,6 +129,34 @@ export const CursorTrackingProvider: FC<{ children: React.ReactNode }> = ({ chil
     // Method to reset the click location 
     const resetClickLocation = () => {
         setClickLocationState(null);
+    }
+
+    // Method to map a cursor position to the artboard dimensions
+    const mapCursorPositionToArtboard = (
+        pos: CursorPosition, 
+        artboardDimensions: ArtboardDimensions
+    ): CursorPosition => {
+        if (!calibrationPoints?.topLeft || !calibrationPoints?.bottomRight) {
+            return pos; // Return unchanged if not calibrated
+        }
+    
+        const { topLeft, bottomRight } = calibrationPoints;
+        
+        // Calculate the scale factors based on calibration points
+        const scaleX = artboardDimensions.width / (bottomRight.x - topLeft.x);
+        const scaleY = artboardDimensions.height / (bottomRight.y - topLeft.y);
+    
+        // Transform the coordinates:
+        // 1. Subtract topLeft to make coordinates relative to calibration area
+        // 2. Apply scaling to map to artboard dimensions
+        const mappedX = (pos.x - topLeft.x) * scaleX;
+        const mappedY = (pos.y - topLeft.y) * scaleY;
+    
+        return { 
+            x: Math.max(0, Math.min(Math.round(mappedX), artboardDimensions.width)),
+            y: Math.max(0, Math.min(Math.round(mappedY), artboardDimensions.height)),
+            time: pos.time 
+        };
     }
 
     // Provides the context values to all children components

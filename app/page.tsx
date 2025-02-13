@@ -2,9 +2,9 @@
 
 import { Suspense, useEffect, useRef } from 'react';
 
-import CursorTrackingOverlay from '@/Components/CursorTrackingOverlay';
-import BottomFooter from '@/Components/BottomFooter';
-import FigmaEmbed from '@/Components/FigmaEmbed';
+import CursorTrackingOverlay from '@/components/CursorTrackingOverlay';
+import BottomFooter from '@/components/BottomFooter';
+import FigmaEmbed from '@/components/FigmaEmbed';
 import { useFigmaEmbed } from '@/contexts/FigmaEmbedContext';
 import { useSearchParams } from 'next/navigation';
 
@@ -43,7 +43,7 @@ function StudyComponent() {
   }
 
   return (
-    <div>
+    <div className="select-none">
       <div className="flex flex-col h-screen w-screen">
         {/* <iframe 
           ref={iframeRef}

@@ -28,10 +28,10 @@ const BottomFooter: React.FC = () => {
             // If the calibration corner is the top left, we need to navigate to the instruction screen
             if (calibrationCorner === 'topLeft') {
                 // Set the calibration points
-                setCalibrationPoint({ x, y }, 'topLeft');
+                setCalibrationPoint({ x, y, time: clickLocation!.time }, 'topLeft');
             } else {
                 // Set the calibration points
-                setCalibrationPoint({ x, y }, 'bottomRight');
+                setCalibrationPoint({ x, y, time: clickLocation!.time }, 'bottomRight');
             }
         }
 

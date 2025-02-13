@@ -9,6 +9,8 @@ import React, {
   useState,
 } from "react";
 
+import { ArtboardTaskConfig, StudySetup } from "@/config/ArtboardConfig";
+
 // Defines the navigation history based on the artboard index and node id
 interface NavigationHistory {
   artboardIndex: number;

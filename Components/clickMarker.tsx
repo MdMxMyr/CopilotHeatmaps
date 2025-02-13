@@ -2,9 +2,24 @@
 
 import React, { useMemo } from "react";
 import { useCursorTracking } from "@/contexts/CursorTrackingContext";
+import { useFigmaEmbed } from "@/contexts/FigmaEmbedContext";
+import { isClickTask } from "@/config/ArtboardConfig";
+
+
+
+// Props for the ClickMarker component
 
 // Component to render a click marker on the screen when a click is detected
 const ClickMarker: React.FC = () => {
+
+    // Get the current task configuration
+    const { currentArtboardTaskConfig } = useFigmaEmbed();
+    if (!currentArtboardTaskConfig) return null;
+
+    // Check if the current task involves a click measurement
+    const isClickMeasurement = isClickTask(currentArtboardTaskConfig?.measurementType);
+    if (!isClickMeasurement) return null;
+
     // Get the click location from the cursor tracking context
     const { clickLocation } = useCursorTracking();
   
