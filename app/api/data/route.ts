@@ -21,8 +21,10 @@ export async function POST(request: NextRequest) {
     const { type, payload } = data as { type: string; payload: ClickData | CursorData };
 
     if (type === 'cursor') {
+      // Parse cursor data
       const cursorData = CursorDataSchema.parse(payload);
       if (cursorData.length > 0) {
+        // Store cursor data
         const { error } = await supabase
           .from('cursor_movements')
           .insert(cursorData);
@@ -31,8 +33,10 @@ export async function POST(request: NextRequest) {
     }
 
     if (type === 'click') {
+      // Parse click data
       const clickData = ClickDataSchema.parse(payload);
       if (clickData.length > 0) {
+        // Store click data
         const { error } = await supabase
           .from('click_events')
           .insert(clickData);
@@ -49,17 +53,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-  
-  // export async function GET() {
-  //   try {
-  //     // Your database fetch logic here
-  //     // Example: const data = await db.cursorTracking.findMany()
-      
-  //     return NextResponse.json({ data: [] }, { status: 200 });
-  //   } catch (error) {
-  //     return NextResponse.json(
-  //       { error: 'Failed to fetch cursor tracking data' },
-  //       { status: 500 }
-  //     );
-  //   }
-  // }
